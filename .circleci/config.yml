@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-  working_directory: /go/src/github.com/Arii-Inc/hoge
+  working_directory: /go/src/github.com/yu19991013/CircleCi-go-test
   docker:
     - image: circleci/golang:1.11.0
     environment:
