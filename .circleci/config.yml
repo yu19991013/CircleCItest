@@ -8,6 +8,8 @@ jobs:
         GO111MODULE: "on"
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - restore_cache: &restore_cache
           name: Restore go modules cache
           keys:
