@@ -1,6 +1,6 @@
 FROM ubuntu:18.04
 
-COPY ./demo-app /opt/
+COPY ./circleci-go-test /opt/
 EXPOSE 8080
 
-ENTRYPOINT ["/opt/demo-app"]
+ENTRYPOINT ["/opt/circleci-go-test"]
