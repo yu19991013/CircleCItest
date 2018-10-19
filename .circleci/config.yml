@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Make the executable
           command: |
-            go build -o ~/main.go
+            go build -o demo-app src/main.go
       - run:
           name: Setup common environment variables
           command: |
@@ -99,4 +99,3 @@ workflows:
           filters:
             branches:
               only: master
-              
