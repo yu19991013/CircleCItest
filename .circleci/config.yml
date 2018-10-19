@@ -8,10 +8,12 @@ jobs:
         GO111MODULE: "on"
     steps:
       - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
       - restore_cache: &restore_cache
           name: Restore go modules cache
           keys:
-            - mod-{{ .Environment.COMMON_CACHE_KEY }}-{{ checksum "go.mod" }}
+          - mod-{{ .Environment.COMMON_CACHE_KEY }}-{{ checksum "go.mod" }}
       - run: &vendoring
           name: Vendoring
           command: go mod download
@@ -45,7 +47,6 @@ workflows:
           requires:
             - build
           filters:
-            tags:
-              only: /.*/
             branches:
-              ignore: /.*/
+              only:
+                - master
