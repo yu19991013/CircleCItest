@@ -1,3 +1,6 @@
-FROM python:3.6.1-alpine
-RUN python3 -m venv venv. venv/bin/activate
-RUN pip install -r requirements.txt
+FROM ubuntu:18.04
+
+COPY ./circleci-go-test /opt/
+EXPOSE 8080
+
+ENTRYPOINT ["/opt/circleci-go-test"]
