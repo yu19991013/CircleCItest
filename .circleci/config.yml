@@ -34,7 +34,7 @@ jobs:
             - docker-image
   deploy:  
     docker:
-      - image: circleci/python:3.6.1
+      - image: yu1013sp:awsdeploy
     environment:
       AWS_DEFAULT_OUTPUT: json
     steps:

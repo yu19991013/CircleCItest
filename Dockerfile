@@ -1,6 +1,3 @@
-FROM ubuntu:18.04
-
-COPY ./circleci-go-test /opt/
-EXPOSE 8080
-
-ENTRYPOINT ["/opt/circleci-go-test"]
+FROM python:3.6.1-alpine
+RUN pip install --upgrade pip 
+RUN pip install awscli
