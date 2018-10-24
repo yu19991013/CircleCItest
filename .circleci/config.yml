@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Make the executable
           command: |
-            go build -o circleci-go-test main.go
+            go build -o circleci-go-test ~/cmd/api/main.go
       - run:
           name: Setup common environment variables
           command: |
