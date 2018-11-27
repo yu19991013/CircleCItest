@@ -13,6 +13,6 @@ ARG BUILD_DATE
 ENV DATETIME ${BUILD_DATE}
 RUN echo ${DATETIME}
 CMD \
-    echo "Build date" && \
+    echo "Build date!" && \
     echo ${DATETIME} && \
     /api/api -c /api/conf/api.toml

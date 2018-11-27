@@ -11,11 +11,6 @@ jobs:
           command: |
             go build -o circleci-go-test ./cmd/api/main.go
       - run:
-          name: Setup common environment variables
-          command: |
-            echo 'export ECR_REPOSITORY_NAME="${AWS_RESOURCE_NAME_PREFIX}"' >> $BASH_ENV
-            echo 'export FULL_IMAGE_NAME="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${ECR_REPOSITORY_NAME}:${CIRCLE_SHA1}"' >> $BASH_ENV
-      - run:
           name: Build image
           command: |
             docker build -t $FULL_IMAGE_NAME .
@@ -34,7 +29,7 @@ jobs:
             - docker-image
   deploy:  
     docker:
-      - image: circleci/python:3.6.1
+      - image: yu1013sp/aws_ecs_deploy:1.0
     environment:
       AWS_DEFAULT_OUTPUT: json
     steps:
@@ -42,29 +37,10 @@ jobs:
       - setup_remote_docker
       - attach_workspace:
           at: workspace
-      - restore_cache:
-          key: v1-{{ checksum "requirements.txt" }}
-      - run:
-          name: Install awscli
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install --upgrade pip
-            pip install -r requirements.txt
-      - save_cache:
-          key: v1-{{ checksum "requirements.txt" }}
-          paths:
-            - "venv"
       - run:
           name: Load image
           command: |
             docker load --input workspace/docker-image/image.tar
-      - run:
-          name: Setup common environment variables
-          command: |
-            echo 'export ECR_REPOSITORY_NAME="${AWS_RESOURCE_NAME_PREFIX}"' >> $BASH_ENV
-            echo 'export ECS_CLUSTER_NAME="${AWS_RESOURCE_NAME_PREFIX}-cluster"' >> $BASH_ENV
-            echo 'export ECS_SERVICE_NAME="${AWS_RESOURCE_NAME_PREFIX}-service"' >> $BASH_ENV
       - run:
           name: Push image
           command: |
@@ -74,10 +50,7 @@ jobs:
       - run:
           name: Deploy
           command: |
-            . venv/bin/activate
-            export ECS_TASK_FAMILY_NAME="${AWS_RESOURCE_NAME_PREFIX}-service"
-            export ECS_CONTAINER_DEFINITION_NAME="${AWS_RESOURCE_NAME_PREFIX}-service"
-            export EXECUTION_ROLE_ARN="arn:aws:iam::$AWS_ACCOUNT_ID:role/${AWS_RESOURCE_NAME_PREFIX}-ecs-execution-role"
+	    . venv/bin/activate
             ./deploy/deploy.sh
 workflows:
   version: 2
