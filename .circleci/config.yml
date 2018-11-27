@@ -48,13 +48,11 @@ jobs:
       - run:
           name: Push image
           command: |
-            . venv/bin/activate
             eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
             docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME:$CIRCLE_SHA1
       - run:
           name: Deploy
           command: |
-            . venv/bin/activate
             ./deploy/deploy.sh
 workflows:
   version: 2
