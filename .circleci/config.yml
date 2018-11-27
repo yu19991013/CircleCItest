@@ -38,6 +38,10 @@ jobs:
       - attach_workspace:
           at: workspace
       - run:
+          name: install docker
+          command: |
+            apk add docker
+      - run:
           name: Load image
           command: |
             docker load --input workspace/docker-image/image.tar
