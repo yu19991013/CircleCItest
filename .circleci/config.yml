@@ -61,6 +61,7 @@ workflows:
     jobs:
       - build
       - deploy:
+          context: aws-stg
           requires:
             - build
           filters:
